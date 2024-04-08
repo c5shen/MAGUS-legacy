@@ -1,4 +1,8 @@
 # MAGUS
+**This is a peronal copy of the MAGUS software available [here](https://github.com/vlasmirnov/MAGUS)**
+
+**Please always refer to the original authors/GitHub page for appreciation.**
+
 Multiple Sequence Alignment using Graph Clustering
 
 - - - -
