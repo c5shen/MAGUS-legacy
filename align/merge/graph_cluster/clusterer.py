@@ -48,6 +48,10 @@ def clusterGraph(graph):
         else:
             runLeiden(graph, "modularity")
 
+    elif Configs.graphClusterMethod == "cm":
+        #TODO
+        pass
+
     else:
         Configs.log("No alignment graph clustering requested..")
     

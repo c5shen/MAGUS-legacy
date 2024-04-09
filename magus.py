@@ -138,6 +138,8 @@ def parseArgs():
     '''
     parser.add_argument("--per-process-mem", type=int,
                         help="Per process memory (GB) for hipmcl", required=False, default=8)
+    parser.add_argument("--resolution-parameter", type=float,
+                        help="Resolution parameter value for Leiden-CPM", required=False, default=0.01)
     return parser.parse_args()
 
 if __name__ == '__main__':

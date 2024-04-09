@@ -65,6 +65,22 @@ def runMafftGuideTree(fastaPath, workingDir, outputPath, threads = 1):
     return Task(taskType = "runCommand", outputFile = outputPath, taskArgs = taskArgs)
 
 '''
+4.8.2024 - Added by Chengze Shen
+Command to run Connectivity-Modifier (CM)
+'''
+def runCM(matrixPath, workingDir, outputPath):
+    #TODO
+    outdir = os.path.dirname(outputPath)
+    tempOutputPath = os.path.join(outdir, 'cm-intermediate.txt')
+    args = ['python3', '-m', 'hm01', '-i', matrixPath,
+            '-o', tempOutputPath, '-c', 'leiden',
+            '-g', str(Configs.resolution_parameter),
+            '--threshold', '1log10', '--nprocs', str(Configs.numCores), 
+            '--quiet']
+    # process the output from CM: each line is a 
+    #taskArgs = {"command": subprocess.list2cmdline(args), 
+
+'''
 3.22.2024 - Added by Chengze Shen
 Command to run HipMCL
 '''

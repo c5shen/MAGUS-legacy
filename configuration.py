@@ -175,3 +175,4 @@ def buildConfigs(args):
     take input for per_process_mem
     '''
     Configs.per_process_mem = args.per_process_mem
+    Configs.resolution_parameter = args.resolution_parameter

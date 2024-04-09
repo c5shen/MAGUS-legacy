@@ -70,3 +70,4 @@ def runLeiden(graph, mode="modularity", resolution_parameter=0.01):
         for line in part:
             f.write('\t'.join([str(x) for x in line]))
             f.write('\n')
+    graph.readClustersFromFile(graph.clusterPath)
