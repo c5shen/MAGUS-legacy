@@ -68,17 +68,18 @@ def runMafftGuideTree(fastaPath, workingDir, outputPath, threads = 1):
 4.8.2024 - Added by Chengze Shen
 Command to run Connectivity-Modifier (CM)
 '''
-def runCM(matrixPath, workingDir, outputPath):
-    #TODO
+def runCM(matrixPath, resolution_parameter, workingDir, outputPath):
     outdir = os.path.dirname(outputPath)
-    tempOutputPath = os.path.join(outdir, 'cm-intermediate.txt')
-    args = ['python3', '-m', 'hm01', '-i', matrixPath,
-            '-o', tempOutputPath, '-c', 'leiden',
-            '-g', str(Configs.resolution_parameter),
-            '--threshold', '1log10', '--nprocs', str(Configs.numCores), 
+    tempPath = os.path.join(outdir, 'temp_{}'.format(os.path.basename(outputPath)))
+    args = ['python3', '-m', 'hm01.cm', '-i', matrixPath,
+            '-o', tempPath, '-c', 'leiden',
+            '-g', str(resolution_parameter),
+            '--threshold', '1log10', '--nprocs',
+            '1',
+            #str(max(1, Configs.numCores // 2)), 
             '--quiet']
-    # process the output from CM: each line is a 
-    #taskArgs = {"command": subprocess.list2cmdline(args), 
+    taskArgs = {"command": subprocess.list2cmdline(args), 'fileCopyMap': {tempPath : outputPath}, 'workingDir': workingDir}
+    return Task(taskType = 'runCommand', outputFile = outputPath, taskArgs = taskArgs)
 
 '''
 3.22.2024 - Added by Chengze Shen

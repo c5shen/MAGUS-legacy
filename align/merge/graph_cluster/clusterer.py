@@ -15,6 +15,7 @@ from align.merge.graph_cluster.rg import rgClustering
 
 from align.merge.graph_cluster.hipmcl import runHipMclClustering
 from align.merge.graph_cluster.leiden import runLeiden
+from align.merge.graph_cluster.cm import runCM
 
 '''
 The alignment graph is clustered, the clusters are written out as an array of node arrays.
@@ -49,8 +50,7 @@ def clusterGraph(graph):
             runLeiden(graph, "modularity")
 
     elif Configs.graphClusterMethod == "cm":
-        #TODO
-        pass
+        runCM(graph, "cpm")
 
     else:
         Configs.log("No alignment graph clustering requested..")

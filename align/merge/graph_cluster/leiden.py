@@ -45,22 +45,30 @@ def runLeiden(graph, mode="modularity", resolution_parameter=0.01):
     with open(inPath, 'r') as f:
         line = f.readline().strip()
         while line:
-            s, t, _ = line.strip().split()
+            s, t, w = line.strip().split()
             s = int(s); t = int(t)
-            if not (s, t) in edges and not (t, s) in edges: 
-                edges.add((s, t))
+            #if not (s, t) in edges and not (t, s) in edges: 
+            #    edges.add((s, t))
+            # consider weights in the graph
+            edges.add((s, t, float(w)))
             line = f.readline().strip()
-    g = ig.Graph.TupleList(edges, directed=False)
+
+    g = ig.Graph.TupleList(edges, weights=True)
     #g = ig.Graph.Read_Edgelist(outPath, directed=False)
+    kwargs = {'weights': 'weight'}
+    Configs.log('Graph is weighted: {}'.format(g.is_weighted()))
+    Configs.log('Weights: {}'.format(g.es['weight']))
+
     if mode == 'modularity':
         Configs.log('(Chengze Shen) Running Leiden with [{}] ...'.format(mode))
-        part = la.find_partition(g, la.ModularityVertexPartition)
+        part = la.find_partition(g, la.ModularityVertexPartition,
+                **kwargs)
     elif mode == 'cpm':
         Configs.log(
             '(Chengze Shen) Running Leiden with [{}, lambda={}] ...'.format(
                 mode, resolution_parameter))
         part = la.find_partition(g, la.CPMVertexPartition,
-                resolution_parameter=resolution_parameter)
+                resolution_parameter=resolution_parameter, **kwargs)
     else:
         raise NotImplementedError
 
