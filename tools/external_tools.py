@@ -103,7 +103,7 @@ def runCMExperimental(matrixPath, resolution_parameter, mode, workingDir, output
     tempPath = os.path.join(outdir, 'temp_{}'.format(os.path.basename(outputPath)))
     logPath = os.path.join(outdir, 'cm_output.log')
 
-    args = [Configs.cmExpPath, '--edgelist', matrixPath,
+    args = [Configs.cmExpPath, 'CM', '--edgelist', matrixPath,
             '--algorithm', 'leiden-{}'.format(mode),
             '--resolution', str(resolution_parameter),
             '--num-processors', '1', #str(max(1, Configs.numCores)),
