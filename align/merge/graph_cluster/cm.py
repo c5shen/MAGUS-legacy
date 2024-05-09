@@ -53,10 +53,26 @@ def runCM(graph, mode):
             '-g', str(Configs.resolution_parameter),
             '--threshold', '1log10', '--nprocs',
             '1',
+            #'--no-prune',
             #str(max(1, Configs.numCores // 2)), 
             '--quiet']
     Configs.debug('Running a command: {}'.format(' '.join(args)))
     os.system(' '.join(args))
+
+    # post-process CM output and render correct format for following steps
+    readCMOutput(CMOutputPath, graph.clusterPath, graph.graphPath)
+
+    graph.readClustersFromFile(graph.clusterPath)
+
+def runCMExperimental(graph, mode):
+    Configs.log("(Chengze Shen) Running Min's CM pipeline (with weight support)...")
+    Configs.log("CM using [{}, alpha={}]".format(mode, Configs.resolution_parameter))
+
+    outdir = os.path.dirname(graph.clusterPath)
+    CMOutputPath = os.path.join(outdir, 'cm_clusters.txt')
+
+    external_tools.runCMExperimental(graph.graphPath, Configs.resolution_parameter,
+            mode, graph.workingDir, CMOutputPath).run()
 
     # post-process CM output and render correct format for following steps
     readCMOutput(CMOutputPath, graph.clusterPath, graph.graphPath)

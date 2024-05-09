@@ -57,7 +57,7 @@ def runLeiden(graph, mode="modularity", resolution_parameter=0.01):
     #g = ig.Graph.Read_Edgelist(outPath, directed=False)
     kwargs = {'weights': 'weight'}
     Configs.log('Graph is weighted: {}'.format(g.is_weighted()))
-    Configs.log('Weights: {}'.format(g.es['weight']))
+    #Configs.log('Weights: {}'.format(g.es['weight']))
 
     if mode == 'modularity':
         Configs.log('(Chengze Shen) Running Leiden with [{}] ...'.format(mode))

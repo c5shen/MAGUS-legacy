@@ -15,7 +15,8 @@ from align.merge.graph_cluster.rg import rgClustering
 
 from align.merge.graph_cluster.hipmcl import runHipMclClustering
 from align.merge.graph_cluster.leiden import runLeiden
-from align.merge.graph_cluster.cm import runCM
+from align.merge.graph_cluster.cm import runCM, runCMExperimental
+from align.merge.graph_cluster.infomap import runInfomapClustering
 
 '''
 The alignment graph is clustered, the clusters are written out as an array of node arrays.
@@ -51,6 +52,13 @@ def clusterGraph(graph):
 
     elif Configs.graphClusterMethod == "cm":
         runCM(graph, "cpm")
+
+    # Min's CM modification with weight support
+    elif Configs.graphClusterMethod == "cmExp":
+        runCMExperimental(graph, "cpm")
+
+    elif Configs.graphClusterMethod == "infomap":
+        runInfomapClustering(graph)
 
     else:
         Configs.log("No alignment graph clustering requested..")

@@ -140,6 +140,11 @@ def parseArgs():
                         help="Per process memory (GB) for hipmcl", required=False, default=8)
     parser.add_argument("--resolution-parameter", type=float,
                         help="Resolution parameter value for Leiden-CPM", required=False, default=0.01)
+    '''
+    5.8.2024 - num-trials for Infomap
+    '''
+    parser.add_argument("--num-trials", type=int,
+                        help="Number of trials to run for Infomap", required=False, default=1)
     return parser.parse_args()
 
 if __name__ == '__main__':

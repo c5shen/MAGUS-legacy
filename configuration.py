@@ -55,14 +55,22 @@ class Configs:
     raxmlPath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tools/raxmlng/raxml-ng")
 
     '''
+    5.9.2024 - bin path to cmExp
+    '''
+    cmExpPath = shutil.which('cmExp')
+
+    '''
     3.22.2024 - Added by Chengze Shen
     path to hipmcl, and per-process-mem
-    4.7.2024 - Updated by --
+    4.7.2024 - Updated by ----
     added resolution_parameter argument
+    5.8.2024 - Updated by ----
+    added num_trials argument for Infomap
     '''
     hipmclPath = shutil.which('hipmcl')
     per_process_mem = 8
     resolution_parameter = 0.01
+    num_trials = 1
 
     logPath = None
     errorPath = None
@@ -173,6 +181,9 @@ def buildConfigs(args):
     '''
     3.22.2024 - Added by Chengze Shen
     take input for per_process_mem
+    5.8.2024 - Added by ----
+    take input for num_trials
     '''
     Configs.per_process_mem = args.per_process_mem
     Configs.resolution_parameter = args.resolution_parameter
+    Configs.num_trials = args.num_trials

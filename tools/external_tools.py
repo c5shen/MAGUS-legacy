@@ -65,6 +65,19 @@ def runMafftGuideTree(fastaPath, workingDir, outputPath, threads = 1):
     return Task(taskType = "runCommand", outputFile = outputPath, taskArgs = taskArgs)
 
 '''
+4.11.2024 - Added by Chengze Shen
+Command to run Infomap
+'''
+def runInfomap(matrixPath, workingDir, outputPath, num_trials=1):
+    outdir = os.path.dirname(matrixPath)
+    basename = os.path.basename(matrixPath).split('.')[0]
+    tempPath = os.path.join(outdir, '{}.clu'.format(basename))
+    args = ['infomap', matrixPath, outdir, '--clu', '-d', '-2',
+            '--num-trials', str(num_trials), '--silent']
+    taskArgs = {'command' : subprocess.list2cmdline(args), 'fileCopyMap' : {tempPath : outputPath}, 'workingDir' : workingDir}
+    return Task(taskType = 'runCommand', outputFile = outputPath, taskArgs = taskArgs)
+
+'''
 4.8.2024 - Added by Chengze Shen
 Command to run Connectivity-Modifier (CM)
 '''
@@ -78,6 +91,24 @@ def runCM(matrixPath, resolution_parameter, workingDir, outputPath):
             '1',
             #str(max(1, Configs.numCores // 2)), 
             '--quiet']
+    taskArgs = {"command": subprocess.list2cmdline(args), 'fileCopyMap': {tempPath : outputPath}, 'workingDir': workingDir}
+    return Task(taskType = 'runCommand', outputFile = outputPath, taskArgs = taskArgs)
+
+'''
+5.9.2024 - Added by Chengze Shen
+Command to run Min's C++ code of experimental CM (with edge weight support)
+'''
+def runCMExperimental(matrixPath, resolution_parameter, mode, workingDir, outputPath):
+    outdir = os.path.dirname(outputPath)
+    tempPath = os.path.join(outdir, 'temp_{}'.format(os.path.basename(outputPath)))
+    logPath = os.path.join(outdir, 'cm_output.log')
+
+    args = [Configs.cmExpPath, '--edgelist', matrixPath,
+            '--algorithm', 'leiden-{}'.format(mode),
+            '--resolution', str(resolution_parameter),
+            '--num-processors', '1', #str(max(1, Configs.numCores)),
+            '--output-file', tempPath,
+            '--log-file', logPath, '--log-level', '1']
     taskArgs = {"command": subprocess.list2cmdline(args), 'fileCopyMap': {tempPath : outputPath}, 'workingDir': workingDir}
     return Task(taskType = 'runCommand', outputFile = outputPath, taskArgs = taskArgs)
 
