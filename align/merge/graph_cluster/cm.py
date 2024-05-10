@@ -24,7 +24,13 @@ def readCMOutput(inpath, outpath, graph):
     with open(inpath, 'r') as f:
         line = f.readline().strip()
         while line:
-            vertex, cluster = line.split('\t')
+            try: 
+                # tab delimiter
+                vertex, cluster = line.split('\t')
+            except ValueError:
+                # space delimiter
+                vertex, cluster = line.split()
+
             vertices.remove(int(vertex))
             clusters[int(cluster)].append(vertex)
             max_cluster_id = max(max_cluster_id, int(cluster))
