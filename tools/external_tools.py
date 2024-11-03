@@ -118,7 +118,9 @@ Command to run HipMCL
 '''
 def runHipMcl(matrixPath, inflation, workingDir, outputPath):
     tempPath = os.path.join(os.path.dirname(outputPath), "temp_{}".format(os.path.basename(outputPath)))
-    args = [Configs.hipmclPath, "-M", matrixPath, "-o", tempPath]#, "-per-process-mem", str(Configs.per_process_mem)]
+    args = [
+            'mpirun', '-np', str(Configs.num_nodes),
+            Configs.hipmclPath, "-M", matrixPath, "-o", tempPath#, "-per-process-mem", str(Configs.per_process_mem)]
     if inflation is not None:
         args.extend(["-I", str(inflation)])
     taskArgs = {"command" : subprocess.list2cmdline(args), "fileCopyMap" : {tempPath : outputPath}, "workingDir" : workingDir}

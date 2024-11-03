@@ -136,6 +136,8 @@ def parseArgs():
     3.22.2024 - Added by Chengze Shen
     argument for per_process_mem for hipmcl
     '''
+    parser.add_argument('--num-nodes', type=int,
+                        help="Number of nodes to run with MPI for hipmcl", required=False, default=1)
     parser.add_argument("--per-process-mem", type=int,
                         help="Per process memory (GB) for hipmcl", required=False, default=8)
     parser.add_argument("--resolution-parameter", type=float,

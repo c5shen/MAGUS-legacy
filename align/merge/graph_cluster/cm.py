@@ -7,6 +7,25 @@ from tools import external_tools
 from collections import defaultdict
 import os
 
+# convert matrix graph to undirected one (i.e., remove (j, i) if (i, j) already
+# present
+def convertGraph(inpath, outpath):
+    edges = {}
+    with open(inpath, 'r') as f:
+        line = f.readline().strip()
+        while line:
+            s, t, w = line.split()
+            # skip bi-directional edge
+            if (int(s), int(t)) in edges or (int(t), int(s)) in edges:
+                pass
+            else:
+                edges[(int(s), int(t))] = w
+            line = f.readline().strip()
+    # write to outpath
+    with open(outpath, 'w') as f:
+        for edge, w in edges.items():
+            f.write('{} {} {}\n'.format(edge[0], edge[1], w))
+
 # CM output: each line --> vertex id \t cluster id
 def readCMOutput(inpath, outpath, graph):
     # read in all original vertices (for appending singletons) 
@@ -77,10 +96,15 @@ def runCMExperimental(graph, mode):
     outdir = os.path.dirname(graph.clusterPath)
     CMOutputPath = os.path.join(outdir, 'cm_clusters.txt')
 
-    external_tools.runCMExperimental(graph.graphPath, Configs.resolution_parameter,
+    # create a temporary file containing only one-direction edges of the
+    # original graph
+    modifiedGraphPath = os.path.join(outdir, 'graph_undirected.txt') 
+    convertGraph(graph.graphPath, modifiedGraphPath)
+
+    external_tools.runCMExperimental(modifiedGraphPath, Configs.resolution_parameter,
             mode, graph.workingDir, CMOutputPath).run()
 
     # post-process CM output and render correct format for following steps
-    readCMOutput(CMOutputPath, graph.clusterPath, graph.graphPath)
+    readCMOutput(CMOutputPath, graph.clusterPath, modifiedGraphPath)
 
     graph.readClustersFromFile(graph.clusterPath)

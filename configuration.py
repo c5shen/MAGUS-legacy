@@ -184,6 +184,7 @@ def buildConfigs(args):
     5.8.2024 - Added by ----
     take input for num_trials
     '''
+    Configs.num_nodes = args.num_nodes
     Configs.per_process_mem = args.per_process_mem
     Configs.resolution_parameter = args.resolution_parameter
     Configs.num_trials = args.num_trials
